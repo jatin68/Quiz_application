@@ -1,0 +1,47 @@
+.heading
+{
+	background-color: #f18973 ;
+	padding: 25px;
+	text-align: center;
+}
+body
+{
+	background-color: #f4e1d2;
+}
+.col-sm-2
+{
+	background-color: #bc5a45;
+	height: 655px;
+}
+.heading1
+{
+	color: white;
+	padding: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	text-align: center;
+	font-size: 30px;
+}
+
+.hidden
+{
+	padding: 50px;
+}
+.show
+{
+	background-color: white;
+	padding: 20px;
+	border-radius: 3%;
+	margin-top: 100px;
+}
+
+.btn:hover
+{
+	background-color: white;
+
+}
+.btn
+{
+	font-size: 23px;
+	color: black;
+}
