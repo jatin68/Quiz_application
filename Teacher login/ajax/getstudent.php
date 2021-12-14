@@ -28,7 +28,7 @@ if(isset($_POST['token']) && password_verify("getstudent",$_POST['token']))
                 <td><?php echo $datarow['email']?></td>
                 <td><?php echo $datarow['class']?></td>
                 <td><?php echo $datarow['uniname']?></td>
-                <td><button onclick="deleted(this.value);" class="contact-delete" value="<?php echo $datarow['id']?>">Delete</button>
+                <td><button onclick="deleted(this.value);" class="contact-delete" value="<?php echo $datarow['sid']?>">Delete</button>
             </tr>
             <?php
             $Srno++;

@@ -51,23 +51,42 @@ session_start();
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6">
                 	<form class="show" id="tform">
-                            <label for="sname">ADD STUDENT:</label><br>
+                            <!-- <label for="sname">ADD STUDENT:</label><br>
                             <input type="text" placeholder="Enter student name" class="form-control" name="sname" id="sname"><br>
                             <label for="sname">ADD Email:</label><br>
                             <input type="text" placeholder="Enter student email" class="form-control" name="email" id="email"><br>
 
                                 <div class="form-group">
                                 <label for="tclass">CLASS: </label><br>
-                                <!--<div class="contain-input">
+                                <div class="contain-input">
                                     <div class="list1" id="list1"></div>
                                 </div>-->
-                                <select name="list1" id="list1" class="form-control" >
+                                <!-- <select name="list1" id="list1" class="form-control" >
                                      <option value="0">Select class</option>
                                  </select>
                             </div>
                             <div class="button1">
                                 <button class="button" onclick="addstudent();">SUBMIT</button>
+                            </div> -->
+
+                            <!-- <div class="form-group">
+                            <label for="test">TEST NAME: </label><br>
+                            <select name="list3" id="list3" class="form-control">
+                                    <option value="0">SELECT TEST</option>
+                            </select> -->
+                            <div class="form-group">
+                                <label for="tclass">CLASS: </label><br>
+                                <select name="list3" id="list3" class="form-control">
+                                    <option value="0">SELECT CLASS</option>
+                                </select>
                             </div>
+                        <h4><b>
+                        Select file :</b>
+                        </h4>
+                        <input type="file"  name="excel" id="excel"><br>
+                        <div class="button1">
+                        <input type="submit" id="submit" value="submit" name="submit" class="button" onclick="adddata()">
+                        </div>
                     </form>
                 </div>
                 <div class="col-sm-3"></div>
@@ -78,34 +97,37 @@ session_start();
                 <div class="studentlist" id="studentlist"></div>
             </div>
     </div>
+    <div class="box-footer">
+                <div class="teacherlist" id="teacherlist"></div>
+    </div>
 	</section>
 
 <script type="text/javascript">
    
 
-    function addstudent() {
-        var sname = document.getElementById('sname').value;
-        var uniclass = document.getElementById('list1').value;
-        var email = document.getElementById('email').value;
-        // var university = document.getElementById('list2').value;
-        var token = "<?php echo password_hash("teachertoken", PASSWORD_DEFAULT);?>"
-        if (sname !== "" && uniclass != "" && email !="" ) {
-            $.ajax(
-                {
-                    type: 'POST',
-                    url: "ajax/addstudent.php",
-                    data: { sname:sname, uniclass: uniclass,email:email , token:token },
-                    success: function (data) {
-                        if (data == 0) {
-                            alert('student added successfully');
-                            window.location = "dashboard.php";
-                        }
-                    }
-                });
-        }else {
-            alert('fill all fields');
-        }
-    }
+    // function addstudent() {
+    //     var sname = document.getElementById('sname').value;
+    //     var uniclass = document.getElementById('list1').value;
+    //     var email = document.getElementById('email').value;
+    //     // var university = document.getElementById('list2').value;
+    //     var token = "<?php echo password_hash("teachertoken", PASSWORD_DEFAULT);?>"
+    //     if (sname !== "" && uniclass != "" && email !="" ) {
+    //         $.ajax(
+    //             {
+    //                 type: 'POST',
+    //                 url: "ajax/addstudent.php",
+    //                 data: { sname:sname, uniclass: uniclass,email:email , token:token },
+    //                 success: function (data) {
+    //                     if (data == 0) {
+    //                         alert('student added successfully');
+    //                         window.location = "dashboard.php";
+    //                     }
+    //                 }
+    //             });
+    //     }else {
+    //         alert('fill all fields');
+    //     }
+    // }
 
 
  
@@ -126,6 +148,28 @@ session_start();
     //             }
     //         });
     // }
+
+    function adddata() {
+        var tform = document.getElementById('tform');
+        var data = new FormData(tform);
+        var token = "<?php echo password_hash("addstudent", PASSWORD_DEFAULT); ?>"
+            $.ajax({
+                type: 'POST',
+                url: "ajax/addstudent.php",
+                    contentType:false,
+                    processData:false,
+                    data: data,
+                    success: function(data) {
+                    alert(data);
+                    if (data == 0) {
+                        alert('data added successfully');
+                        window.location = "dashboard.php";
+                    }
+                }
+            });
+
+    }
+
     getclass();
     function getclass()
     {
@@ -138,26 +182,44 @@ session_start();
                 data: {token:token,classid:classid},
                 success: function (data) 
                 {
-                    $('#list1').html(data);
+                    $('#list3').html(data);
                 }
             });
     }
-    // getstudent();
-    // function getstudent()
-    // {
-    //     var token='<?php echo password_hash("getstudent", PASSWORD_DEFAULT);?>';
+    getstudent();
+    function getstudent()
+    {
+        var token='<?php echo password_hash("getstudent", PASSWORD_DEFAULT);?>';
 
-    //     $.ajax(
-    //     {
-    //         type:'POST',
-    //         url:"ajax/getstudent.php",
-    //         data:{token:token},
-    //         success:function(data)
-    //         {
-    //             $('#studentlist').html(data);
-    //         }     
-    //     });student
-    // }
+        $.ajax(
+        {
+            type:'POST',
+            url:"ajax/getstudent.php",
+            data:{token:token},
+            success:function(data)
+            {
+                $('#teacherlist').html(data);
+            }     
+        });
+    }
+    function deleted(i)
+    {
+        alert(i);
+        var token='<?php echo password_hash("deletestudent", PASSWORD_DEFAULT);?>';
+
+        $.ajax(
+        {
+            type:'POST',
+            url:"ajax/deletestudent.php",
+            data:{token:token,id:i},
+            success:function(data)
+            {
+                window.location= "dashboard.php";
+            }     
+        });        
+
+    }
+
 </script>
 <script type=text/javascript>
  $('form').submit(function(e){

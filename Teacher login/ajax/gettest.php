@@ -3,10 +3,11 @@ include('connection.php');
 session_start();
 if(isset($_POST['token']) && password_verify("gettest",$_POST['token']))
 {
+    $cid=$_POST['classid'];
 
-        $check=$db->prepare('SELECT * FROM addtest');
+        $check=$db->prepare('SELECT * FROM addtest where class=?');
 
-        $data=array();
+        $data=array($cid);
 
         $execute=$check->execute($data);
 ?>

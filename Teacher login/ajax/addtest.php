@@ -6,15 +6,6 @@ if(isset($_POST['token']) && password_verify("testtoken",$_POST['token']))
     $testname=test_input($_POST['testname']);
     $class=test_input($_POST['uniclass']);
 
-    $query = $db->prepare('SELECT * FROM addtest where testname=?');
-    $data=array($testname);
-    $execute=$query->execute($data);
-    if($query->rowcount()>0)
-    {
-        echo"test already exist";
-    }
-    else
-    {
         if($testname!="")
         {
         $query=$db->prepare("INSERT INTO addtest(testname,class) VALUES (?,?)");
@@ -28,8 +19,6 @@ if(isset($_POST['token']) && password_verify("testtoken",$_POST['token']))
             echo"something went wrong";
         }
     }
-    }
-    
 
 }
 else{

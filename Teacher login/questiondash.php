@@ -53,11 +53,22 @@ session_start();
                     <form class="show" id="tform">
                         <div class="form-group">
                             <label for="test">TEST NAME: </label><br>
-                            <div class="contain-input">
+                            <!-- <div class="contain-input">
                                 <div class="list3" id="list3"></div>
-                            </div>
+                            </div> -->
+                            <select name="list3" id="list3" class="form-control">
+                                    <option value="0">SELECT TEST</option>
+                            </select>
                         </div>
-                        <label for="question">QUESTION:</label><br>
+                        <h4><b>
+                        Select file :</b>
+                        </h4>
+                        <input type="file"  name="excel" id="excel"><br>
+                        <div class="button1">
+                        <input type="submit" id="submit" value="submit" name="submit" class="button" onclick="adddata()">
+                        </div>
+
+                        <!-- <label for="question">QUESTION:</label><br>
                         <textarea type="text" placeholder="Enter question" class="form-control" name="question" id="question"></textarea><br>
                         <label for="opt1">OPTION 1:</label><br>
                         <input type="text" placeholder="Enter option 1" class="form-control" name="opt1" id="opt1"><br>
@@ -71,7 +82,7 @@ session_start();
                         <input type="text" placeholder="Enter correct opt" class="form-control" name="correct" id="correct"><br>
                         <div class="button1">
                             <button class="button" onclick="addquestion();">SUBMIT</button>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
                 <div class="col-sm-3"></div>
@@ -81,44 +92,65 @@ session_start();
     </section>
 
 <script type="text/javascript">
-    function addquestion() {
-        var testname= document.getElementById('testname').value;
-        var question = document.getElementById('question').value;
-        var opt1 = document.getElementById('opt1').value;
-        var opt2 = document.getElementById('opt2').value;
-        var opt3 = document.getElementById('opt3').value;
-        var opt4 = document.getElementById('opt4').value;
-        var correct = document.getElementById('correct').value;
-        var token = "<?php echo password_hash("questiontoken", PASSWORD_DEFAULT);?>"
-        if (question !== "" && opt1 !== "" && opt2 !=="" && opt3 !== "" && opt4 !== "" && correct !== "") {
-            $.ajax(
-                {
-                    type: 'POST',
-                    url: "ajax/addquestion.php",
-                    data: { testname:testname , question:question , opt1:opt1 , opt2:opt2 , opt3:opt3 , opt4:opt4 , correct:correct ,token:token },
-                    success: function (data) {
-                        if (data == 0) {
-                            alert('question added successfully');
-                            window.location = "questiondash.php";
-                        }
+    // function addquestion() {
+    //     var testname= document.getElementById('testname').value;
+    //     var question = document.getElementById('question').value;
+    //     var opt1 = document.getElementById('opt1').value;
+    //     var opt2 = document.getElementById('opt2').value;
+    //     var opt3 = document.getElementById('opt3').value;
+    //     var opt4 = document.getElementById('opt4').value;
+    //     var correct = document.getElementById('correct').value;
+    //    var token = "<?php echo password_hash("questiontoken", PASSWORD_DEFAULT);?>"
+    //     if (question !== "" && opt1 !== "" && opt2 !=="" && opt3 !== "" && opt4 !== "" && correct !== "") {
+    //         $.ajax(
+    //             {
+    //                 type: 'POST',
+    //                 url: "ajax/addquestion.php",
+    //                 data: { testname:testname , question:question , opt1:opt1 , opt2:opt2 , opt3:opt3 , opt4:opt4 , correct:correct ,token:token },
+    //                 success: function (data) {
+    //                     if (data == 0) {
+    //                         alert('question added successfully');
+    //                         window.location = "questiondash.php";
+    //                     }
+    //                 }
+    //             }
+    //         );
+    //     }
+    //     else {
+    //         alert('fill all fields');
+    //     }
+    // }
+    function adddata() {
+        var tform = document.getElementById('tform');
+        var data = new FormData(tform);
+        var token = "<?php echo password_hash("addstudent", PASSWORD_DEFAULT); ?>"
+            $.ajax({
+                type: 'POST',
+                url: "ajax/excel.php",
+                    contentType:false,
+                    processData:false,
+                    data: data,
+                    success: function(data) {
+                    alert(data);
+                    if (data == 0) {
+                        alert('data added successfully');
+                        window.location = "questiondash.php";
                     }
                 }
-            );
-        }
-        else {
-            alert('fill all fields');
-        }
+            });
+
     }
     gettest();
     function gettest()
     {
+        var classid = <?php echo $_SESSION['class']; ?>;
         var token = "<?php echo password_hash("gettest", PASSWORD_DEFAULT);?>";
 
         $.ajax(
             {
                 type: 'POST',
                 url: "ajax/gettest.php",
-                data: {token:token},
+                data: {classid:classid,token:token},
                 success: function (data) 
                 {
                     $('#list3').html(data);

@@ -53,15 +53,12 @@ session_start();
                 	<form class="show" id="tform">
                             <label for="testname">ADD TEST:</label><br>
                             <input type="text" placeholder="Enter test name" class="form-control" name="testname" id="testname"><br>
-                            <div class="form-group">
-                            <label for="uni">UNIVERSITY: </label><br>
-                            <!--<div class="contain-input">
-                                <div class="list2" id="list2" ></div>
-                            </div>-->
-                            <select name="list2" id="list2" class="form-control" onchange="getclass();">
+                            <!-- <div class="form-group">
+                            <label for="uni">UNIVERSITY: </label><br> -->
+                            <!-- <select name="list2" id="list2" class="form-control" onchange="getclass();">
                                      <option value="0">Select University</option>
                             </select> 
-                            </div>
+                            </div> -->
                                 <div class="form-group">
                                 <label for="tclass">CLASS: </label><br>
                                 <!--<div class="contain-input">
@@ -112,39 +109,42 @@ session_start();
     }
 
  
-    getuni()
-    function getuni()
-    {
-        var token = "<?php echo password_hash("getuni", PASSWORD_DEFAULT);?>";
+    // getuni()
+    // function getuni()
+    // {
+    //     var token = "<?php echo password_hash("getuni", PASSWORD_DEFAULT);?>";
 
-        $.ajax(
-            {
-                type: 'POST',
-                url: "ajax/getuni1.php",
-                data: {token:token},
-                success: function (data) 
-                {
-                    $('#list2').html(data);
+    //     $.ajax(
+    //         {
+    //             type: 'POST',
+    //             url: "ajax/getuni1.php",
+    //             data: {token:token},
+    //             success: function (data) 
+    //             {
+    //                 $('#list2').html(data);
 
-                }
-            });
-    }
+    //             }
+    //         });
+    // }
 
+    getclass();
     function getclass()
     {
-        var uid= document.getElementById('list2').value;
+        var classid= <?php echo $_SESSION['class']; ?>;
         var token = "<?php echo password_hash("getclass", PASSWORD_DEFAULT);?>"
         $.ajax(
             {
                 type: 'POST',
                 url: "ajax/getclass.php",
-                data: {token:token,uid:uid},
+                data: {token:token,classid:classid},
                 success: function (data) 
                 {
                     $('#list1').html(data);
                 }
             });
     }
+
+
  
 </script>
 <script type=text/javascript>
